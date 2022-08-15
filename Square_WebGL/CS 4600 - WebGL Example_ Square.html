@@ -1,0 +1,64 @@
+
+<!-- saved from url=(0064)https://graphics.cs.utah.edu/courses/cs4600/fall2020/square.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><doctype html="">
+<!-- Copyright 2020, Cem Yuksel, University of Utah -->
+
+
+<title>CS 4600 - WebGL Example: Square</title>
+
+<script id="vertexShader" type="x-shader/x-vertex">
+	attribute vec3 pos;
+	attribute vec3 normal;
+	attribute vec4 clr;
+	
+	uniform mat4 viewProgMatrix;
+	
+	varying vec4 vcolor;
+	varying vec3 vnormal;
+	
+	void main()
+	{
+		gl_Position = viewProgMatrix * vec4(pos,1);
+		vcolor = clr;
+		vnormal = normal;
+	}
+</script>
+<script id="fragmentShader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	uniform vec3 lightDirection;
+
+	varying vec4 vcolor;
+	varying vec3 vnormal;
+	
+	void main()
+	{
+		float lightIntensity = dot(-lightDirection, vnormal);
+		vec3 meshColor = vcolor.rgb * lightIntensity;
+		gl_FragColor = vec4(meshColor, vcolor.a);
+	}
+</script>
+<script type="text/javascript" id="includedscript" src="myMath.js"></script>
+<script type="text/javascript" id="includedscript" src="myMathTests.js"></script>
+<script type="text/javascript" id="includedscript" src="meshBuilder.js"></script>
+<script type="text/javascript" id="includedscript" src="render.js"></script>
+<script type="text/javascript">
+window.onload = function()
+{
+	Init();
+}
+</script>
+<style>
+#mycanvas {
+	width: 50%;
+	height: 50%;
+	margin: auto;
+	display: block;
+	border: 1px solid black;
+}
+</style>
+
+
+<canvas id="mycanvas" width="950" height="461"></canvas>
+
+</doctype></body></html>
